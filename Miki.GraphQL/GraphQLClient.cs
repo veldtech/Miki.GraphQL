@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Rest;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Miki.GraphQL
@@ -17,20 +18,20 @@ namespace Miki.GraphQL
 		}
 
 		/// <summary>
+		/// Query the endpoint with a raw function.
+		/// </summary>
+		/// <param name="query">GraphQL query</param>
+		/// <param name="variables">Variables used in query</param>
+		/// <returns>Object of type T converted</returns>
+		public async Task<string> QueryAsync(string query, object variables)
+			=> await InternalQueryAsync(CreateQueryJson(query, variables));
+		/// <summary>
 		/// Query the endpoint with a raw function and receive the json response, for parameters use $p0, $p1... to access your variables
 		/// </summary>
 		/// <param name="query">GraphQL query</param>
 		/// <param name="variables">Variables used in query</param>
 		/// <returns>Json response</returns>
 		public async Task<string> QueryAsync(string query, params object[] variables)
-			=> await InternalQueryAsync(CreateQueryJson(query, variables));
-		/// <summary>
-		/// Query the endpoint with a raw function.
-		/// </summary>
-		/// <param name="query">GraphQL query</param>
-		/// <param name="variables">Variables used in query</param>
-		/// <returns>Object of type T converted</returns>
-		public async Task<string> QueryAsync(string query, params KeyValuePair<string, object>[] variables)
 			=> await InternalQueryAsync(CreateQueryJson(query, variables));
 
 		/// <summary>
@@ -49,7 +50,7 @@ namespace Miki.GraphQL
 		/// <param name="query">GraphQL query</param>
 		/// <param name="variables">Variables used in query</param>
 		/// <returns>Object of type T converted</returns>
-		public async Task<T> QueryAsync<T>(string query, params KeyValuePair<string, object>[] variables)
+		public async Task<T> QueryAsync<T>(string query, object variables)
 			=> await InternalQueryAsync<T>(CreateQueryJson(query, variables));
 
 		/// <summary>
@@ -98,13 +99,10 @@ namespace Miki.GraphQL
 		/// <param name="query">base query</param>
 		/// <param name="variables">variables from query</param>
 		/// <returns>postable query</returns>
-		string CreateQueryJson(string query, params KeyValuePair<string, object>[] variables)
+		string CreateQueryJson(string query, object variables)
 		{
-			Dictionary<string, object> allVariables = new Dictionary<string, object>();
-			foreach (var v in variables)
-				allVariables.Add(v.Key, v.Value);
-
-			return CreateQueryJson(query, allVariables);
+			string serializedVariables = JsonConvert.SerializeObject(variables);
+			return FormatQueryString(query, serializedVariables);
 		}
 		/// <summary>
 		/// Utility function to create queries for post messages
@@ -115,7 +113,16 @@ namespace Miki.GraphQL
 		string CreateQueryJson(string query, Dictionary<string, object> variables)
 		{
 			string serializedVariables = JsonConvert.SerializeObject(variables);
-			return $"{{ \"query\": \"{query}\", \"variables\": {serializedVariables} }}";
+			return FormatQueryString(query, serializedVariables);
 		}
+
+		/// <summary>
+		/// Formats the query in a GraphQL-like json structure
+		/// </summary>
+		/// <param name="query">query string</param>
+		/// <param name="variables">variable string</param>
+		/// <returns>GraphQL-formatted json</returns>
+		string FormatQueryString(string query, string variables)
+			=> $"{{ \"query\": \"{query}\", \"variables\": {variables} }}";
 	}
 }

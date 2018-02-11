@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <Authors>Velddev</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company />
+    <Description>small GraphQL client</Description>
+    <PackageProjectUrl>https://github.com/Mikibot/Miki.GraphQL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Mikibot/Miki.GraphQL</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>miki bot discord graphql client</PackageTags>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="LICENSE" />
+    <None Remove="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Miki.Rest" Version="1.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+</Project>
