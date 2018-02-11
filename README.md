@@ -1,7 +1,7 @@
 # Miki.GraphQL
 GraphQL client
 
-`Install-Package Miki.GraphQL`
+> Install-Package Miki.GraphQL
 
 ## Usage
 ```cs
