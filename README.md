@@ -1,6 +1,8 @@
 # Miki.GraphQL
 GraphQL client
 
+`Install-Package Miki.GraphQL`
+
 ## Usage
 ```cs
 // Create an instance of your client
