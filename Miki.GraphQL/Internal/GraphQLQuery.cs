@@ -8,6 +8,6 @@ namespace Miki.GraphQL.Internal
 	internal class GraphQLQuery<T>
 	{
 		[JsonProperty("data")]
-		internal T Data;
+		internal T Data = default(T);
 	}
 }

@@ -23,7 +23,7 @@ namespace Miki.GraphQL
 		/// <param name="query">GraphQL query</param>
 		/// <param name="variables">Variables used in query</param>
 		/// <returns>Object of type T converted</returns>
-		public async Task<string> QueryAsync(string query, object variables)
+		public async Task<string> QueryAsync(string query, params GraphQLParameter[] variables)
 			=> await InternalQueryAsync(CreateQueryJson(query, variables));
 		/// <summary>
 		/// Query the endpoint with a raw function and receive the json response, for parameters use $p0, $p1... to access your variables
@@ -50,7 +50,7 @@ namespace Miki.GraphQL
 		/// <param name="query">GraphQL query</param>
 		/// <param name="variables">Variables used in query</param>
 		/// <returns>Object of type T converted</returns>
-		public async Task<T> QueryAsync<T>(string query, object variables)
+		public async Task<T> QueryAsync<T>(string query, params GraphQLParameter[] variables)
 			=> await InternalQueryAsync<T>(CreateQueryJson(query, variables));
 
 		/// <summary>
@@ -99,10 +99,16 @@ namespace Miki.GraphQL
 		/// <param name="query">base query</param>
 		/// <param name="variables">variables from query</param>
 		/// <returns>postable query</returns>
-		string CreateQueryJson(string query, object variables)
+		string CreateQueryJson(string query, params GraphQLParameter[] variables)
 		{
-			string serializedVariables = JsonConvert.SerializeObject(variables);
-			return FormatQueryString(query, serializedVariables);
+			Dictionary<string, object> allVariables = new Dictionary<string, object>();
+
+			for (int i = 0; i < variables.Length; i++)
+			{
+				allVariables.Add(variables[i].Key, variables[i].Value);
+			}
+
+			return CreateQueryJson(query, allVariables);
 		}
 		/// <summary>
 		/// Utility function to create queries for post messages

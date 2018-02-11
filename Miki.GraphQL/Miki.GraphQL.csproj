@@ -1,7 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <Version>1.0.1</Version>
+    <Authors>Velddev</Authors>
+    <Company />
+    <Description>small GraphQL client</Description>
+    <PackageProjectUrl>https://github.com/Mikibot/Miki.GraphQL</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Mikibot/Miki.GraphQL</RepositoryUrl>
+    <PackageTags>miki bot discord graphql client</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Fix: small issue with anonymous objects</PackageReleaseNotes>
+    <Copyright>Mike Veldsink</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/500px-GraphQL_Logo.svg.png</PackageIconUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Miki.Rest" Version="1.2.0" />
+  </ItemGroup>
 
 </Project>
