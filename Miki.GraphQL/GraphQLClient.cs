@@ -1,6 +1,6 @@
 ﻿using Miki.GraphQL.Internal;
 using Newtonsoft.Json;
-using Rest;
+using Miki.Rest;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -59,7 +59,7 @@ namespace Miki.GraphQL
 		/// <param name="query">GraphQL query</param>
 		/// <returns>Json response</returns>
 		internal async Task<string> InternalQueryAsync(string query)
-			=> (await restClient.PostAsync<string>("", query)).Body;
+			=> (await restClient.PostAsync("", query)).Body;
 
 		/// <summary>
 		/// Query GraphQL string and receive serialized object

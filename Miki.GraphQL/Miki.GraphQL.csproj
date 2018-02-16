@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Velddev</Authors>
     <Company />
     <Description>small GraphQL client</Description>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/Mikibot/Miki.GraphQL</RepositoryUrl>
     <PackageTags>miki bot discord graphql client</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Fix: small issue with anonymous objects</PackageReleaseNotes>
+    <PackageReleaseNotes>Update: to Miki.Rest 1.2.2</PackageReleaseNotes>
     <Copyright>Mike Veldsink</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Miki.Rest" Version="1.2.0" />
+    <PackageReference Include="Miki.Rest" Version="1.2.2" />
   </ItemGroup>
 
 </Project>
