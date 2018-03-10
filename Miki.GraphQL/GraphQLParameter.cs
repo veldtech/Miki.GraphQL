@@ -6,17 +6,14 @@ namespace Miki.GraphQL
 {
 	public class GraphQLParameter
 	{
-		public string Key { get; internal set; }
 		public object Value { get; internal set; }
 
-		Type type;
+		public string ParamType { get; internal set; }
 
-		public GraphQLParameter(string key, object value)
+		public GraphQLParameter(object value, string type = "String")
 		{
-			Key = key;
 			Value = value;
-
-			type = value.GetType();
+			ParamType = type;
 		}
 	}
 }

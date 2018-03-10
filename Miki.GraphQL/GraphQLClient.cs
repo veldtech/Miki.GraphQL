@@ -102,13 +102,17 @@ namespace Miki.GraphQL
 		string CreateQueryJson(string query, params GraphQLParameter[] variables)
 		{
 			Dictionary<string, object> allVariables = new Dictionary<string, object>();
+			List<string> queryArgs = new List<string>();
+
+			string queryBase = "query(";
 
 			for (int i = 0; i < variables.Length; i++)
 			{
-				allVariables.Add(variables[i].Key, variables[i].Value);
+				queryArgs.Add($"$p{i}:{variables[i].ParamType}");
+				allVariables.Add($"p{i}", variables[i].Value);
 			}
 
-			return CreateQueryJson(query, allVariables);
+			return CreateQueryJson($"{queryBase}{string.Join(",", queryArgs)}){{ {query} }}", allVariables);
 		}
 		/// <summary>
 		/// Utility function to create queries for post messages
