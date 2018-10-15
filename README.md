@@ -9,6 +9,9 @@ Install directly from NuGet
 > Install-Package Miki.GraphQL
 
 ## Usage
+
+### Basic usage
+For simple usage, you can use `QueryAsync`
 ```cs
 // Create an instance of your client
 GraphQLClient graph = new GraphQLClient("https://your-endpoint.website/");
@@ -19,3 +22,15 @@ var query = "query($p0 :Int) { User(id: $p0) { name, object { something_needed }
 // Query to your endpoint
 await graph.QueryAsync<User>(query, 22);
 ```
+
+### Query builders
+Use `graph.CreateQuery` for easy reusable queries.
+```cs
+// Create an instance of your client
+GraphQLClient graph = new GraphQLClient("https://your-endpoint.website/");
+
+// Prepare your query
+var query = graph.CreateQuery()
+
+// Query to your endpoint
+await graph.QueryAsync<User>(query, 22);
