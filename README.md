@@ -4,6 +4,8 @@
 
 GraphQL client
 
+## Install
+Install directly from NuGet
 > Install-Package Miki.GraphQL
 
 ## Usage
