@@ -1,30 +1,23 @@
-﻿using Miki.GraphQL.Internal;
-using Newtonsoft.Json;
-using Miki.Rest;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Miki.Rest;
 using System.Reflection;
 using System.Threading.Tasks;
+using Miki.Net.Http;
+using Miki.GraphQL.Queries;
 
 namespace Miki.GraphQL
 {
     public class GraphQLClient
     {
-		RestClient restClient;
+		HttpClient restClient;
 
 		public GraphQLClient(string url)
 		{
-			restClient = new RestClient(url);
+			restClient = new HttpClient(url);
 		}
 
-		/// <summary>
-		/// Query the endpoint with a raw function.
-		/// </summary>
-		/// <param name="query">GraphQL query</param>
-		/// <param name="variables">Variables used in query</param>
-		/// <returns>Object of type T converted</returns>
-		public async Task<string> QueryAsync(string query, params GraphQLParameter[] variables)
-			=> await InternalQueryAsync(CreateQueryJson(query, variables));
 		/// <summary>
 		/// Query the endpoint with a raw function and receive the json response, for parameters use $p0, $p1... to access your variables
 		/// </summary>
@@ -43,14 +36,24 @@ namespace Miki.GraphQL
 		/// <returns>Object of type T converted</returns>
 		public async Task<T> QueryAsync<T>(string query, params object[] variables)
 			=> await InternalQueryAsync<T>(CreateQueryJson(query, variables));
+
 		/// <summary>
-		/// Query the endpoint with a raw function
+		/// Query the endpoint with a raw function and receive the json response, for parameters use $p0, $p1... to access your variables
+		/// </summary>
+		/// <param name="query">GraphQL query</param>
+		/// <param name="variables">Variables used in query</param>
+		/// <returns>Json response</returns>
+		public async Task<string> QueryAsync(string query, params ValueTuple<string,object>[] variables)
+			=> await InternalQueryAsync(CreateQueryJson(query, variables));
+
+		/// <summary>
+		/// Query the endpoint with a raw function, for parameters use $p0, $p1... to access your variables
 		/// </summary>
 		/// <typeparam name="T">The output object serialized to</typeparam>
 		/// <param name="query">GraphQL query</param>
 		/// <param name="variables">Variables used in query</param>
 		/// <returns>Object of type T converted</returns>
-		public async Task<T> QueryAsync<T>(string query, params GraphQLParameter[] variables)
+		public async Task<T> QueryAsync<T>(string query, params ValueTuple<string, object>[] variables)
 			=> await InternalQueryAsync<T>(CreateQueryJson(query, variables));
 
 		/// <summary>
@@ -68,7 +71,7 @@ namespace Miki.GraphQL
 		/// <returns>Response of type T</returns>
 		internal async Task<T> InternalQueryAsync<T>(string query)
 		{
-			RestResponse<GraphQLQuery<T>> response = await restClient.PostAsync<GraphQLQuery<T>>("", query);
+			HttpResponse<GraphQLQuery<T>> response = await restClient.PostAsync<GraphQLQuery<T>>("", query);
 			if (response.Success)
 			{
 				return response.Data.Data;
@@ -93,27 +96,25 @@ namespace Miki.GraphQL
 
 			return CreateQueryJson(query, allVariables);
 		}
+
 		/// <summary>
 		/// Utility function to create queries for post messages
 		/// </summary>
 		/// <param name="query">base query</param>
 		/// <param name="variables">variables from query</param>
 		/// <returns>postable query</returns>
-		string CreateQueryJson(string query, params GraphQLParameter[] variables)
+		string CreateQueryJson(string query, params ValueTuple<string, object>[] variables)
 		{
 			Dictionary<string, object> allVariables = new Dictionary<string, object>();
-			List<string> queryArgs = new List<string>();
-
-			string queryBase = "query(";
 
 			for (int i = 0; i < variables.Length; i++)
 			{
-				queryArgs.Add($"$p{i}:{variables[i].ParamType}");
-				allVariables.Add($"p{i}", variables[i].Value);
+				allVariables.Add(variables[i].Item1, variables[i].Item2);
 			}
 
-			return CreateQueryJson($"{queryBase}{string.Join(",", queryArgs)}){{ {query} }}", allVariables);
+			return CreateQueryJson(query, allVariables);
 		}
+
 		/// <summary>
 		/// Utility function to create queries for post messages
 		/// </summary>

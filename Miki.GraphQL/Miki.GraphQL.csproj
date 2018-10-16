@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
-    <Version>1.0.4</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.0.0</Version>
     <Authors>Velddev</Authors>
     <Company />
     <Description>small GraphQL client</Description>
@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/Mikibot/Miki.GraphQL</RepositoryUrl>
     <PackageTags>miki bot discord graphql client</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Update: to Miki.Rest 1.3.0</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Copyright>Mike Veldsink</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Miki.Rest" Version="1.3.1" />
+    <PackageReference Include="Miki.Net.Http" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

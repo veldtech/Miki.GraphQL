@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Miki.GraphQL.Internal
+namespace Miki.GraphQL
 {
 	internal class GraphQLQuery<T>
 	{
