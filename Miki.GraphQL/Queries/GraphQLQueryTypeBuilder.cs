@@ -54,7 +54,8 @@ namespace Miki.GraphQL.Queries
 
 		public ITypeBuilder WithType(string key, Func<ITypeBuilder, ITypeBuilder> predicate)
 		{
-			ITypeBuilder builder = predicate(new GraphQLQueryTypeBuilder(key));
+			var graphQLTypeBuilder = new GraphQLQueryTypeBuilder(key);
+			ITypeBuilder builder = predicate(graphQLTypeBuilder);
 
 			if (builder.Types.Count == 0 && builder.Parameters.Count == 0)
 			{

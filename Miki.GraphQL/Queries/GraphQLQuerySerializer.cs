@@ -61,9 +61,10 @@ namespace Miki.GraphQL.Queries
 		{
 			var type = "{0}";
 
-			if(valueType.IsArray)
+			if(typeof(Array).IsAssignableFrom(valueType))
 			{
 				type = "[{0}]";
+				valueType = valueType.GetElementType();
 			}
 
 			var nullableType = Nullable.GetUnderlyingType(valueType);
@@ -119,16 +120,16 @@ namespace Miki.GraphQL.Queries
 				_builder.Append("(");
 				_builder.Append(string.Join(",", type.Parameters.Select(x => x.Name + ":" + x.Value).ToList()));
 				_builder.Append(")");
-
-				AddScope();
-
-				foreach(var o in type.Types)
-				{
-					SerializeObject(o);
-				}
-
-				RemoveScope();
 			}
+
+			AddScope();
+
+			foreach (var o in type.Types)
+			{
+				SerializeObject(o);
+			}
+
+			RemoveScope();
 		}
 
 		private void SerializeObject(IGraphQLObject o)
