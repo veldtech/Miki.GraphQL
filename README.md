@@ -31,6 +31,9 @@ GraphQLClient graph = new GraphQLClient("https://your-endpoint.website/");
 
 // Prepare your query
 var query = graph.CreateQuery()
+  .WithSchema<User>()
+  .WithDynamicParameter("id")
+  .Compile();
 
 // Query to your endpoint
-await graph.QueryAsync<User>(query, 22);
+await query.ExecuteAsync<User>("id", 22);
